@@ -24,9 +24,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dinocat.f1tenthctrl.joystickcontroller.JoyStickClass;
+
+import org.apache.xmlrpc.server.XmlRpcErrorLogger;
 import org.ros.address.InetAddressFactory;
 import org.ros.android.RosActivity;
 import org.ros.node.NodeConfiguration;
@@ -35,8 +38,8 @@ import org.ros.node.NodeMainExecutor;
 public class MainActivity extends RosActivity {
 
     RelativeLayout layout_joystick0, layout_joystick1;
-    TextView textView1, textView2;
-    EditText limitY, limitX;
+    TextView textView1, textView2, textView4, textView5;
+    SeekBar limitY, limitX;
     Button auto;
 
     public static JoyStickClass js0, js1;
@@ -57,14 +60,30 @@ public class MainActivity extends RosActivity {
 
         textView1 = (TextView)findViewById(R.id.textView1);
         textView2 = (TextView)findViewById(R.id.textView2);
+        textView4 = (TextView)findViewById(R.id.textView4);
+        textView5 = (TextView)findViewById(R.id.textView5);
 
         img = (ImageView) findViewById(R.id.imageView);
 
         layout_joystick0 = (RelativeLayout)findViewById(R.id.layout_joystick0);
         layout_joystick1 = (RelativeLayout)findViewById(R.id.layout_joystick1);
 
-        limitX = (EditText) findViewById(R.id.limitX);
-        limitY = (EditText) findViewById(R.id.limitY);
+        View.OnTouchListener seekList = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                textView4.setText("Limit: " + limitX.getProgress());
+                textView5.setText("Limit: " + limitY.getProgress());
+                return false;
+            }
+        };
+
+        limitX = (SeekBar) findViewById(R.id.limitX);
+        limitX.setOnTouchListener(seekList);
+        limitX.setProgress(100);
+
+        limitY = (SeekBar) findViewById(R.id.limitY);
+        limitY.setOnTouchListener(seekList);
+        limitY.setProgress(100);
 
         auto = (Button) findViewById(R.id.buttonAuto);
         auto.setOnTouchListener(new View.OnTouchListener() {
@@ -122,9 +141,9 @@ public class MainActivity extends RosActivity {
         nodeMainExecutor.execute(node, nodeConfiguration);
     }
 
-    private void sendData() {
-        int Xlim = Integer.parseInt(limitY.getText().toString());
-        int Ylim = Integer.parseInt(limitX.getText().toString());
+    public void sendData() {
+        int Xlim = limitX.getProgress();
+        int Ylim = limitY.getProgress();
 
         int throttle = js0.getYvalue(-Xlim);
         int steer = js1.getXvalue(-Ylim);
