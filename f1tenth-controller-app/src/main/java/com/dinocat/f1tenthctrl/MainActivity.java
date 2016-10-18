@@ -16,6 +16,7 @@
 
 package com.dinocat.f1tenthctrl;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -113,7 +114,7 @@ public class MainActivity extends RosActivity {
 
     @Override
     protected void init(NodeMainExecutor nodeMainExecutor) {
-        node = new SimplePublisherNode();
+        node = new SimplePublisherNode(this);
 
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(InetAddressFactory.newNonLoopback().getHostAddress());
         nodeConfiguration.setMasterUri(getMasterUri());
@@ -131,5 +132,13 @@ public class MainActivity extends RosActivity {
 
         textView2.setText("STEER: " + String.valueOf(steer));
         textView1.setText("THROTTLE: " + String.valueOf(throttle));
+    }
+
+    public void updateImg(final Bitmap bmp) {
+        runOnUiThread (new Thread(new Runnable() {
+            public void run() {
+                img.setImageBitmap(bmp);
+            }
+        }));
     }
 }

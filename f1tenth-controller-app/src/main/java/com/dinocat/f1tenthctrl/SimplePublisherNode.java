@@ -19,6 +19,7 @@ package com.dinocat.f1tenthctrl;
 import android.graphics.Bitmap;
 
 import org.ros.android.BitmapFromCompressedImage;
+import org.ros.android.RosActivity;
 import org.ros.internal.message.MessageInterfaceBuilder;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
@@ -38,6 +39,12 @@ public class SimplePublisherNode extends AbstractNodeMain implements NodeMain {
     private Publisher<drive_param> publisher;
     private Publisher<Bool> autoPub;
     private Subscriber<CompressedImage> imgSub;
+    private MainActivity parent;
+
+    public SimplePublisherNode(MainActivity parent) {
+        super();
+        this.parent = parent;
+    }
 
     @Override
     public GraphName getDefaultNodeName() {
@@ -50,14 +57,15 @@ public class SimplePublisherNode extends AbstractNodeMain implements NodeMain {
         autoPub = connectedNode.newPublisher(GraphName.of("eStop"), Bool._TYPE);
 
         imgSub = connectedNode.newSubscriber(
-                GraphName.of("camera/left/image_rect_color/compressed"), CompressedImage._TYPE);
+                GraphName.of("usb_cam/image_raw/compressed"), CompressedImage._TYPE);
         final BitmapFromCompressedImage converter = new BitmapFromCompressedImage();
 
         imgSub.addMessageListener(new MessageListener<CompressedImage>() {
             @Override
             public void onNewMessage(CompressedImage compressedImage) {
-                Bitmap bmp = converter.call(compressedImage);
-                MainActivity.img.setImageBitmap(bmp);
+
+            Bitmap bmp = converter.call(compressedImage);
+            parent.updateImg(bmp);
             }
         });
     }
