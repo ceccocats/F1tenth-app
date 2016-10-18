@@ -17,7 +17,14 @@
 package org.ollide.rosandroid;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import org.ollide.rosandroid.joystickcontroller.JoyStickClass;
 import org.ros.address.InetAddressFactory;
 import org.ros.android.RosActivity;
 import org.ros.node.NodeConfiguration;
@@ -25,6 +32,15 @@ import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
 
 public class MainActivity extends RosActivity {
+
+    RelativeLayout layout_joystick0, layout_joystick1;
+    TextView textView1, textView2;
+    EditText limitY, limitX;
+    Button auto;
+
+    public static JoyStickClass js0, js1;
+    public SimplePublisherNode node;
+
 
     public MainActivity() {
         super("RosAndroidExample", "RosAndroidExample");
@@ -34,15 +50,82 @@ public class MainActivity extends RosActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        textView1 = (TextView)findViewById(R.id.textView1);
+        textView2 = (TextView)findViewById(R.id.textView2);
+
+        layout_joystick0 = (RelativeLayout)findViewById(R.id.layout_joystick0);
+        layout_joystick1 = (RelativeLayout)findViewById(R.id.layout_joystick1);
+
+        limitX = (EditText) findViewById(R.id.limitX);
+        limitY = (EditText) findViewById(R.id.limitY);
+
+        auto = (Button) findViewById(R.id.buttonAuto);
+        auto.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                node.sendAutoMsg();
+                return false;
+            }
+        });
+
+        js0 = new JoyStickClass(getApplicationContext(), layout_joystick0, R.drawable.image_button);
+        js0.setStickSize(150, 150);
+        js0.setLayoutSize(500, 500);
+        js0.setLayoutAlpha(150);
+        js0.setStickAlpha(100);
+        js0.setPossibleMove(false, true);
+        js0.update(null);
+
+
+        js1 = new JoyStickClass(getApplicationContext(), layout_joystick1, R.drawable.image_button);
+        js1.setStickSize(150, 150);
+        js1.setLayoutSize(500, 500);
+        js1.setLayoutAlpha(150);
+        js1.setStickAlpha(100);
+        js1.setPossibleMove(true, false);
+        js1.update(null);
+
+        layout_joystick0.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                js0.update(arg1);
+
+                sendData();
+                return true;
+            }
+        });
+        layout_joystick1.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                js1.update(arg1);
+
+                sendData();
+                return true;
+            }
+        });
+
+
     }
 
     @Override
     protected void init(NodeMainExecutor nodeMainExecutor) {
-        NodeMain node = new SimplePublisherNode();
+        node = new SimplePublisherNode();
 
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(InetAddressFactory.newNonLoopback().getHostAddress());
         nodeConfiguration.setMasterUri(getMasterUri());
 
         nodeMainExecutor.execute(node, nodeConfiguration);
+    }
+
+    private void sendData() {
+        int Xlim = Integer.parseInt(limitY.getText().toString());
+        int Ylim = Integer.parseInt(limitX.getText().toString());
+
+        int throttle = js0.getYvalue(-Xlim);
+        int steer = js1.getXvalue(-Ylim);
+        node.sendData(throttle, steer);
+
+        textView2.setText("STEER: " + String.valueOf(steer));
+        textView1.setText("THROTTLE: " + String.valueOf(throttle));
     }
 }
