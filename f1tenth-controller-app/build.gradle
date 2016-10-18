@@ -5,7 +5,7 @@ android {
     buildToolsVersion '24.0.3'
 
     defaultConfig {
-        applicationId "org.ollide.rosandroid"
+        applicationId "com.dinocat.f1tenthctrl"
         // Android 4.0+ http://dannyroa.com/2013/10/17/why-its-time-to-support-only-android-4-0-and-above
         minSdkVersion 14
         targetSdkVersion 22
