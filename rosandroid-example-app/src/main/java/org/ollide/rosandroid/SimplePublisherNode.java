@@ -16,21 +16,28 @@
 
 package org.ollide.rosandroid;
 
+import android.graphics.Bitmap;
+
+import org.ros.android.BitmapFromCompressedImage;
 import org.ros.internal.message.MessageInterfaceBuilder;
+import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
 import org.ros.node.topic.Publisher;
+import org.ros.node.topic.Subscriber;
 
 import race.drive_param;
 import std_msgs.Bool;
+import sensor_msgs.CompressedImage;
 
 public class SimplePublisherNode extends AbstractNodeMain implements NodeMain {
 
     private static final String TAG = SimplePublisherNode.class.getSimpleName();
-    Publisher<drive_param> publisher;
-    Publisher<Bool> autoPub;
+    private Publisher<drive_param> publisher;
+    private Publisher<Bool> autoPub;
+    private Subscriber<CompressedImage> imgSub;
 
     @Override
     public GraphName getDefaultNodeName() {
@@ -41,6 +48,18 @@ public class SimplePublisherNode extends AbstractNodeMain implements NodeMain {
     public void onStart(ConnectedNode connectedNode) {
         publisher = connectedNode.newPublisher(GraphName.of("drive_parameters"), drive_param._TYPE);
         autoPub = connectedNode.newPublisher(GraphName.of("eStop"), Bool._TYPE);
+
+        imgSub = connectedNode.newSubscriber(
+                GraphName.of("camera/left/image_rect_color/compressed"), CompressedImage._TYPE);
+        final BitmapFromCompressedImage converter = new BitmapFromCompressedImage();
+
+        imgSub.addMessageListener(new MessageListener<CompressedImage>() {
+            @Override
+            public void onNewMessage(CompressedImage compressedImage) {
+                Bitmap bmp = converter.call(compressedImage);
+                MainActivity.img.setImageBitmap(bmp);
+            }
+        });
     }
 
     public void sendData(int throttle, int steer) {

@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,7 +40,9 @@ public class MainActivity extends RosActivity {
     Button auto;
 
     public static JoyStickClass js0, js1;
+    public static ImageView img;
     public SimplePublisherNode node;
+
 
 
     public MainActivity() {
@@ -54,6 +57,8 @@ public class MainActivity extends RosActivity {
 
         textView1 = (TextView)findViewById(R.id.textView1);
         textView2 = (TextView)findViewById(R.id.textView2);
+
+        img = (ImageView) findViewById(R.id.imageView);
 
         layout_joystick0 = (RelativeLayout)findViewById(R.id.layout_joystick0);
         layout_joystick1 = (RelativeLayout)findViewById(R.id.layout_joystick1);
