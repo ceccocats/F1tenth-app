@@ -77,7 +77,7 @@ public class SimplePublisherNode extends AbstractNodeMain implements NodeMain {
         // create and publish a simple string message
         drive_param msg = publisher.newMessage();
         msg.setVelocity(throttle);
-        msg.setAngle(-steer);
+        msg.setAngle(steer);
         publisher.publish(msg);
     }
 

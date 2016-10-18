@@ -146,11 +146,11 @@ public class MainActivity extends RosActivity {
         int Ylim = limitY.getProgress();
 
         int throttle = js0.getYvalue(-Xlim);
-        int steer = js1.getXvalue(-Ylim);
+        int steer = js1.getXvalue(Ylim);
         node.sendData(throttle, steer);
 
-        textView2.setText("STEER: " + String.valueOf(steer));
-        textView1.setText("THROTTLE: " + String.valueOf(throttle));
+        textView2.setText("STEER: " + steer);
+        textView1.setText("THROTTLE: " + throttle);
     }
 
     public void updateImg(final Bitmap bmp) {
