@@ -57,7 +57,7 @@ public class SimplePublisherNode extends AbstractNodeMain implements NodeMain {
         autoPub = connectedNode.newPublisher(GraphName.of("eStop"), Bool._TYPE);
 
         imgSub = connectedNode.newSubscriber(
-                GraphName.of("usb_cam/image_raw/compressed"), CompressedImage._TYPE);
+                GraphName.of("camera/left/image_rect_color/compressed"), CompressedImage._TYPE);
         final BitmapFromCompressedImage converter = new BitmapFromCompressedImage();
 
         imgSub.addMessageListener(new MessageListener<CompressedImage>() {
