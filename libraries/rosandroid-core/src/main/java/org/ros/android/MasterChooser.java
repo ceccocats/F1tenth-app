@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -116,6 +117,7 @@ public class MasterChooser extends Activity {
       socket.close();
     } catch (Exception e) {
       Toast.makeText(MasterChooser.this, "Unable to connect", Toast.LENGTH_SHORT).show();
+      e.printStackTrace();
       return;
     }
 
