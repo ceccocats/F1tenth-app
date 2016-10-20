@@ -131,7 +131,6 @@ public class MasterChooser extends Activity {
     intent.putExtra("NEW_MASTER", false);
     intent.putExtra("ROS_MASTER_URI", masterUri);
     setResult(RESULT_OK, intent);
-    //TODO: result error
     finish();
   }
 
