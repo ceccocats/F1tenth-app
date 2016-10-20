@@ -110,6 +110,15 @@ public class MasterChooser extends Activity {
       return;
     }
 
+    try {
+      URI uri = new URI(userUri);
+      java.net.Socket socket = new java.net.Socket(uri.getHost(), uri.getPort());
+      socket.close();
+    } catch (Exception e) {
+      Toast.makeText(MasterChooser.this, "Unable to connect", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
     // If the displayed URI is valid then pack that into the intent.
     masterUri = userUri;
     SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
@@ -120,6 +129,7 @@ public class MasterChooser extends Activity {
     intent.putExtra("NEW_MASTER", false);
     intent.putExtra("ROS_MASTER_URI", masterUri);
     setResult(RESULT_OK, intent);
+    //TODO: result error
     finish();
   }
 
