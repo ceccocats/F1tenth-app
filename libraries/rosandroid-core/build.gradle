@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '24.0.3'
+    buildToolsVersion '25.0.0'
 }
 
 configurations {
@@ -10,7 +10,6 @@ configurations {
 }
 
 dependencies {
-
     compile('org.ros.rosjava_core:rosjava:0.2.1') {
         exclude group: 'xml-apis'
         exclude group: 'junit'
@@ -19,5 +18,4 @@ dependencies {
     compile 'org.ros.rosjava_messages:std_msgs:0.5.9'
     compile 'org.ros.rosjava_messages:rosgraph_msgs:1.11.1'
     compile 'org.ros.rosjava_messages:sensor_msgs:1.11.7'
-
 }

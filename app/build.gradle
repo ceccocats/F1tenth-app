@@ -2,7 +2,16 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '24.0.3'
+    buildToolsVersion '25.0.0'
+
+    signingConfigs {
+        mySignature {
+            storeFile     file('dribl-android-key.jks')
+            storePassword ANDROID_STORE_PASSWORD
+            keyAlias      'DriblKey'
+            keyPassword   ANDROID_KEY_PASSWORD
+        }
+    }
 
     defaultConfig {
         applicationId "com.dinocat.f1tenthctrl"
@@ -14,6 +23,8 @@ android {
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.mySignature
+
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

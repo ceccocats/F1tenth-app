@@ -99,7 +99,7 @@ public class NodeMainExecutorService extends Service implements NodeMainExecutor
       // We must be running on a pre-Honeycomb device.
       Log.w(TAG, "Unable to acquire high performance wifi lock.");
     }
-    WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+    WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
     wifiLock = wifiManager.createWifiLock(wifiLockType, TAG);
     wifiLock.acquire();
   }

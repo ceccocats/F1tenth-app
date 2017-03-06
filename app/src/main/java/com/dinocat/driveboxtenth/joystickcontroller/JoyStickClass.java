@@ -1,4 +1,4 @@
-package com.dinocat.f1tenthctrl.joystickcontroller;
+package com.dinocat.driveboxtenth.joystickcontroller;
 
 import android.content.Context;
 import android.graphics.Bitmap;

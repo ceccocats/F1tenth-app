@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.dinocat.f1tenthctrl;
+package com.dinocat.driveboxtenth;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -22,15 +22,13 @@ import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.dinocat.f1tenthctrl.joystickcontroller.JoyStickClass;
+import com.dinocat.driveboxtenth.joystickcontroller.JoyStickClass;
 
-import org.apache.xmlrpc.server.XmlRpcErrorLogger;
 import org.ros.address.InetAddressFactory;
 import org.ros.android.RosActivity;
 import org.ros.node.NodeConfiguration;

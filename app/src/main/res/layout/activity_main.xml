@@ -52,7 +52,7 @@
             android:gravity="center" />
 
         <Button
-            android:text="Auto"
+            android:text="Auto Pilot"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/buttonAuto"

@@ -14,12 +14,11 @@
  * the License.
  */
 
-package com.dinocat.f1tenthctrl;
+package com.dinocat.driveboxtenth;
 
 import android.graphics.Bitmap;
 
 import org.ros.android.BitmapFromCompressedImage;
-import org.ros.android.RosActivity;
 import org.ros.internal.message.MessageInterfaceBuilder;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
@@ -57,7 +56,7 @@ public class SimplePublisherNode extends AbstractNodeMain implements NodeMain {
         autoPub = connectedNode.newPublisher(GraphName.of("eStop"), Bool._TYPE);
 
         imgSub = connectedNode.newSubscriber(
-                GraphName.of("camera/left/image_rect_color/compressed"), CompressedImage._TYPE);
+                GraphName.of("zed/rgb/image_rect_color"), CompressedImage._TYPE);
         final BitmapFromCompressedImage converter = new BitmapFromCompressedImage();
 
         imgSub.addMessageListener(new MessageListener<CompressedImage>() {

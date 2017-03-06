@@ -7,3 +7,5 @@
 *.log
 *.iml
 release/
+gradle.properties
+*.jks
